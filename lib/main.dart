@@ -18,13 +18,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  var questions = [
+    'What is your name?',
+    'What is your fathers name?',
+    'What did you do to me?'
+  ];
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What is your name?',
-      'What is your fathers name?',
-      'What did you do to me?'
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
