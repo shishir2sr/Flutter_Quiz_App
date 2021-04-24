@@ -12,17 +12,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var questionState = 0;
+  var _questionState = 0;
   void _answerQuestion() {
     setState(() {
-      questionState += 1;
+      _questionState += 1;
     });
   }
 
   var questions = [
-    'What is your name?',
-    'What is your fathers name?',
-    'What did you do to me?'
+    {
+      'questions': 'What is your name?',
+      'answers': ['Tusher', 'Emon', 'Rifat', 'Ekramul']
+    },
+    {
+      'questions': 'Where do you live?',
+      'answers': ['Tusher', 'Emon', 'Rifat']
+    },
+    {
+      'questions': 'What time is it now?',
+      'answers': ['Tusher', 'Emon']
+    }
   ];
   @override
   Widget build(BuildContext context) {
@@ -32,11 +41,9 @@ class _MyAppState extends State<MyApp> {
           title: Text("Quize"),
         ),
         body: Column(children: <Widget>[
-          Questions(questions[questionState]),
-          Answers(
-              _answerQuestion, Colors.greenAccent), //Answers class constractor
-          Answers(_answerQuestion, Colors.blue), //Answers class constractor
-          Answers(_answerQuestion, Colors.orange), //Answers class constractor
+          Questions(questions[_questionState]['questions']),
+          ...(questions[_questionState]['answers'] as List<String>)
+              .map((answer) => Answers(_answerQuestion, answer))
         ]),
       ),
     );
