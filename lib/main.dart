@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Questions.dart';
-import 'answer.dart';
+
+import 'quiz.dart';
+import 'result.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,25 +14,49 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionState = 0;
-  void _answerQuestion() {
+  int _totalScore = 0;
+  void _resetQuiz() {
+    setState(() {
+      _questionState = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestion(int Score) {
+    _totalScore += Score;
     setState(() {
       _questionState += 1;
     });
   }
 
-  var questions = [
+  final _questions = const [
     {
-      'questions': 'What is your name?',
-      'answers': ['Tusher', 'Emon', 'Rifat', 'Ekramul']
+      'questionText': 'What\'s your favorite color?',
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1},
+      ],
     },
     {
-      'questions': 'Where do you live?',
-      'answers': ['Tusher', 'Emon', 'Rifat']
+      'questionText': 'What\'s your favorite animal?',
+      'answers': [
+        {'text': 'Rabbit', 'score': 3},
+        {'text': 'Snake', 'score': 11},
+        {'text': 'Elephant', 'score': 5},
+        {'text': 'Lion', 'score': 9},
+      ],
     },
     {
-      'questions': 'What time is it now?',
-      'answers': ['Tusher', 'Emon']
-    }
+      'questionText': 'Who\'s your favorite instructor?',
+      'answers': [
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
+      ],
+    },
   ];
   @override
   Widget build(BuildContext context) {
@@ -40,11 +65,13 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("Quize"),
         ),
-        body: Column(children: <Widget>[
-          Questions(questions[_questionState]['questions']),
-          ...(questions[_questionState]['answers'] as List<String>)
-              .map((answer) => Answers(_answerQuestion, answer))
-        ]),
+        body: _questionState < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionState: _questionState,
+                questions: _questions,
+              )
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
